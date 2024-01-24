@@ -289,7 +289,7 @@ jr $ra
 
 
 
-end_funcions
+end_funcions:
 
 # Conclusiones:
 #  - El código es muy poco optimo, ya que se itera n^2 veces
