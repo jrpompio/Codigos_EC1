@@ -1,5 +1,21 @@
-# 
-
+# Tarea01
+# Estudiante: Junior Ruiz Sánchez
+# Carné: B97026
+#
+# Este código toma un arreglo y encuentra los elementos de mayor y menor valor
+# dentro del arreglo. El final del arreglo es marcado por el elemento cero.
+#
+# Usa un sistema de puntaje
+#
+# Si un elemento M es mayor a otro elemento N 
+# recibe un punto en lista1; por cada elemento 
+# al que M sea mayor a N al comparar,
+# por lo que si un elemento M queda con cero puntos, este elemento es el menor
+#
+# Si un elemento M es menor a otro elemento N 
+# recibe un punto en lista2; por cada elemento 
+# al que M sea menor a N al comparar,
+# por lo que si un elemento M queda con cero puntos, este elemento es el mayor
 .data
 Array: .word 87, 216, -54, 751, 1, 36, 1225, -446,
 -6695, -8741, 101, 9635, -9896, 4, 2008, -99, -6, 1,
@@ -273,4 +289,11 @@ jr $ra
 
 
 
-end_funcions:
+end_funcions
+
+# Conclusiones:
+#  - El código es muy poco optimo, ya que se itera n^2 veces
+#    donde n es el numero de elementos sin contar el cero.
+#  - El código fue útil para poner en práctica todo lo aprendido en clases
+#    por lo que es buen código para estudiar el uso de los comandos, además
+#    es altamente reusable, debido a que la mayor parte se realizó con funciones
