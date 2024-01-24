@@ -1,19 +1,55 @@
+# 
+
 .data
 Array: .word 87, 216, -54, 751, 1, 36, 1225, -446,
 -6695, -8741, 101, 9635, -9896, 4, 2008, -99, -6, 1,
 544, 6, 7899, 74, -42, -9, 0
 
+msj1: .asciiz " \n Mostrando Array: \n "
+msj2: .asciiz " \n Mostrando Array nuevamente: \n "
+msj_mayor: .asciiz "\n Numero mayor: "
+msj_menor: .asciiz "\n Numero menor: "
+
 .text 
 main:
-la $a0, Array
-jal mayor_menor 
+la $a0, Array # Inicio del array en argument $a0
+
+la $a1, msj1  	# Inicio de la cadena msj1 en argumento $a1
+jal print_cadena # para usar función print_cadena
+jal print_list	# Función print_list usa argumento $a0
+				# y muestra el array cuyo puntero está en $a0
+
+jal mayor_menor # Función para encontrar numero mayor y menor del array 
+				# cuyo puntero se encuentra en $a0
+				# $v0: Guarda el número menor
+				# $v1: Guarda el numero mayor
+
+la $a1, msj_mayor # Inicio de la cadena msj_mayor en argumento $a1
+jal print_cadena  # para usar función print_cadena
+jal valor_v1
+
+la $a1, msj_menor # Inicio de la cadena msj_menor en argumento $a1
+jal print_cadena  # para usar función print_cadena
+jal valor_v0
+
+la $a1, msj2     # Inicio de la cadena msj2 en argumento $a1
+jal print_cadena # para usar función print_cadena
+jal print_list  # Función print_list usa argumento $a0
+				# y muestra el array cuyo puntero está en $a0
 
 
 j end_funcions
 
 mayor_menor:
-# Para encontrar el mayor	
-	addi $sp, $sp, -20
+
+# Esta función obtiene el número mayor y número menor de un array
+# Usa un puntero el cual indica la dirección en la cual está la primera
+# palabra del arreglo, analiza hasta encontrar el elemento cero
+# el cual marca el fin del arreglo.
+# $a0: argumento de dirección del elemento inicial del arreglo
+# $v0: registro donde retorna el valor mínimo 
+# $v1: registro donde retorna el valor máximo
+
 	addi $t7, $a0, 0 # Guardando puntero de array en valor temporal
 	addi $t8, $0, 0  # variable para contar tamaño de lista (contando el cero)
 	
@@ -112,7 +148,129 @@ add $t3, $a0, $t1 # Una vez encontrado el indice del elemento mayor
 				  
 lw $v0, 0($t3)    # Se guarda valor menor
 
+				  # Ajustando $sp a su valor original
+sub $sp, $sp, $t8   
+sub $sp, $sp, $t8   
+
 jr $ra
+
+print_list:
+
+# Esta función muestra en pantalla un arreglo
+# usa como argumento de inicio la dirección en memoria del primer elemento
+# que corresponde al arreglo, finaliza cuando encuentra un cero
+# el cual no muestra en pantalla
+# $a0: argumento de dirección del elemento inicial del arreglo
+# Muestra la lista de la forma [a,b,c] \n
+
+
+	addi $sp, $sp, -8 # apartando espacio en memoria para guardar $a0 y $v0
+	sw  $a0, 4($sp)   # salvando valor de $a0 
+	sw  $v0, 0($sp)	  # salvando valor de $v0
+	addi $t0, $a0, 0  # salvando inicio de la lista en variable temporal
+	
+	addi $v0, $0, 11  # $v0 en 11 sirve para mostrar el caracter contenido en $a0
+	addi $a0, $0, 91  # 91 en codigo ascii es: [
+	syscall
+	
+	loop_list:
+	addi $v0, $0, 1  # $v0 en 1 sirve para mostrar un número entero
+	lw $a0, 0($t0)   # se carga el valor entero de la lista a mostrar
+	syscall
+	
+	addi $t0, $t0, 4
+	lw $a0, 0($t0)
+	
+	beq $a0, $0, no_coma
+	
+	addi $v0, $0, 11  # $v0 en 11 sirve para mostrar el caracter contenido en $a0
+	addi $a0, $0, 44  # 44 en codigo ascii es: ,
+	syscall	
+	
+	no_coma:
+	bne $a0, $0, loop_list
+	
+
+	
+	addi $v0, $0, 11  # $v0 en 11 sirve para mostrar el caracter contenido en $a0
+	addi $a0, $0, 93  # 93 en codigo ascii es: ]
+	syscall	
+	
+	addi $v0, $0, 11  # $v0 en 11 sirve para mostrar el caracter contenido en $a0
+	addi $a0, $0, 10  # 10 en codigo ascii es un salto de linea \n
+	syscall	
+	
+	lw  $v0, 0($sp)	# retornando valor de $v0
+	lw  $a0, 4($sp)	# retornando valor de $a0
+	addi $sp, $sp, 8 # devolviendo el puntero a su valor original
+jr $ra
+
+print_cadena:
+# esta función obtiene del argumento el inicio de una cadena de carácteres
+# tipo asciiz, muestra desde el primer elemento de la cadena
+# hasta encontrar un valor 0 y detenerse
+# $a1: argumento de dirección del elemento inicial de la cadena
+
+	addi $sp, $sp, -8 # apartando espacio en memoria para guardar $a0 y $v0
+	sw  $a0, 4($sp)   # salvando valor de $a0 
+	sw  $v0, 0($sp)	  # salvando valor de $v0
+	addi $t0, $a1, 0  # salvando inicio de la lista en variable temporal
+					  # usará el argumento $a1
+					  
+	addi $v0, $0, 4 # el valor 4 en $v0 muestra en pantalla una cadena
+			        # esta cadena empieza en la dirección de memoria que contiene $a0
+			        
+	addi $a0, $a1, 0 # inicio de la cadena de carácteres
+	syscall
+	
+	lw  $v0, 0($sp)	# retornando valor de $v0
+	lw  $a0, 4($sp)	# retornando valor de $a0
+	addi $sp, $sp, 8 # devolviendo el puntero a su valor original
+jr $ra
+
+valor_v0:
+# muestra en pantalla el valor correspondiente al registro $v0
+
+	addi $sp, $sp, -8 # apartando espacio en memoria para guardar $a0 y $v0
+	sw  $a0, 4($sp)   # salvando valor de $a0 
+	sw  $v0, 0($sp)	  # salvando valor de $v0
+	
+	addi $a0, $v0, 0
+	addi $v0, $0, 1
+	syscall
+	
+	addi $v0, $0, 11  # $v0 en 11 sirve para mostrar el caracter contenido en $a0
+	addi $a0, $0, 10  # 10 en codigo ascii es un salto de linea \n
+	syscall	
+	
+	lw  $v0, 0($sp)	# retornando valor de $v0
+	lw  $a0, 4($sp)	# retornando valor de $a0
+	addi $sp, $sp, 8 # devolviendo el puntero a su valor original
+	
+jr $ra
+
+valor_v1:
+# muestra en pantalla el valor correspondiente al registro $v1
+	addi $sp, $sp, -12 # apartando espacio en memoria para guardar $a0 y $v0
+	sw  $v1, 12($sp)   # salvando valor de $v1
+	sw  $a0, 4($sp)    # salvando valor de $a0 
+	sw  $v0, 0($sp)	   # salvando valor de $v0
+	
+	addi $a0, $v1, 0
+	addi $v0, $0, 1
+	syscall
+	
+	addi $v0, $0, 11  # $v0 en 11 sirve para mostrar el caracter contenido en $a0
+	addi $a0, $0, 10  # 10 en codigo ascii es un salto de linea \n
+	syscall	
+	
+	lw  $v0, 0($sp)	   # retornando valor de $v0
+	lw  $a0, 4($sp)	   # retornando valor de $a0
+	lw  $v1, 12($sp)   # salvando valor de $v1
+	addi $sp, $sp, 12   # devolviendo el puntero a su valor original
+jr $ra
+
+
 
 
 end_funcions:
