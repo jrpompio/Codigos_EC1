@@ -1,5 +1,5 @@
 li $s0, 1
-li $s1, 0
+li $s1, 1
 
 ADDI $sp, $sp, -12 # espacio de 12 bytes para la cadena 
 
