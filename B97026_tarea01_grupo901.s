@@ -17,9 +17,7 @@
 # al que M sea menor a N al comparar,
 # por lo que si un elemento M queda con cero puntos, este elemento es el mayor
 .data
-Array: .word 87, 216, -54, 751, 1, 36, 1225, -446,
--6695, -8741, 101, 9635, -9896, 4, 2008, -99, -6, 1,
-544, 6, 7899, 74, -42, -9, 0
+Array: .word 87, 216, -54, 751, 1, 36, 1225, -446, -6695, -8741, 101, 9635, -9896, 4, 2008, -99, -6, 1, 544, 6, 7899, 74, -42, -9, 0
 
 msj1: .asciiz " \n Mostrando Array: \n "
 msj2: .asciiz " \n Mostrando Array nuevamente: \n "
@@ -28,7 +26,7 @@ msj_menor: .asciiz "\n Numero menor: "
 
 .text
  
-MAIN:
+main:
 
 la $a0, Array # Inicio del array en argument $a0
 
