@@ -33,6 +33,7 @@ MAIN:
 la $a0, Array # Inicio del array en argument $a0
 
 la $a1, msj1  	 # Inicio de la cadena msj1 en argumento $a1
+
 jal PRINT_CADENA # para usar función PRINT_CADENA
 jal PRINT_LIST	 # Función PRINT_LIST usa argumento $a0
 				 # y muestra el array cuyo puntero está en $a0
