@@ -6,7 +6,7 @@
     li $v0, 4
     
     li $s0, 1
-    li $s1, 0
+    li $s1, 1
 
     beq $s0, $s1, iguales
     

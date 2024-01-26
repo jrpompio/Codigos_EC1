@@ -17,7 +17,9 @@
 # al que M sea menor a N al comparar,
 # por lo que si un elemento M queda con cero puntos, este elemento es el mayor
 .data
-Array: .word 87, 216, -54, 751, 1, 36, 1225, -446, -6695, -8741, 101, 9635, -9896, 4, 2008, -99, -6, 1, 544, 6, 7899, 74, -42, -9, 0
+Array:
+.word 87, 216, -54, 751, 1, 36, 1225, -446, -6695, -8741, 101, 9635
+.word -9896, 4, 2008, -99, -6, 1, 544, 6, 7899, 74, -42, -9, 0
 
 msj1: .asciiz " \n Mostrando Array: \n "
 msj2: .asciiz " \n Mostrando Array nuevamente: \n "
@@ -136,12 +138,12 @@ MAYOR_MENOR:
 							  # de lista 1
 	
 	LOOP3:  				  # Loop de busqueda del valor mayor
-	
+
 	lw $t0, 0($t7) 			  # Carga el array de los puntajes
 	sub $t1, $t7, $sp         # desfase con el puntero 
 	addi $t7, $t7, 4          # Aumenta en 4 para encontrar el indice siguiente
 	bne $t0, $0, LOOP3        # como el buscador termine al encontrar el primer cero
-							  # el desfase almacenado en $t1
+			        			  # el desfase almacenado en $t1
 							  # se le suma a la dirección del primer elemento del Array
 	
 add $t3, $a0, $t1 # Una vez encontrado el indice del elemento mayor
