@@ -30,7 +30,7 @@ msj_menor: .asciiz "\n Numero menor: "
  
 main:
 
-la $a0, Array # Inicio del array en argument $a0
+la $a0, Array    # Inicio del array en argument $a0
 
 la $a1, msj1  	 # Inicio de la cadena msj1 en argumento $a1
 
