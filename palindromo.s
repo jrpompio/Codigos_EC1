@@ -3,7 +3,7 @@
 	msj_entrada:
 	        .ascii "La cadena:"
 		.asciiz "\n"	
-    	cadena: .asciiz "aba"    
+    	cadena: .asciiz "aibofobia"    
 	
 	msj_si: .ascii "\n\n"
 		.asciiz "Es palindromo\n"
@@ -123,14 +123,14 @@ main:                       # Codigo principal
 	bne $t5, $0, FOR    # siempre y cuando la variable de control
 					    # no llegue a cero, se repetirá
 	
-	j SI    # si no se encontró ninguna comparación en la que indique
+	j SI        # si no se encontró ninguna comparación en la que indique
 		    # que la cadena no es un palindromo, se salta al valor que indica 
 		    # que si lo es $s1 = 1
  	
  	NO_ES:
  	addi $s1, $0, 0     # $s1 = 0, indica que no es un palindromo
  	j FIN               # se salta a la etiqueta "fin" para no pasar 
- 		                # por el valor que indica que si es un palindromo
+ 		            # por el valor que indica que si es un palindromo
  	
  	SI:
  	addi $s1, $0, 1
@@ -138,4 +138,4 @@ main:                       # Codigo principal
  	
  	FIN:
  	jr $ra              # Se devuelve al valor pc + 4 a pc que se guardó en $ra
- 		                # al momento de hacer jal a la función
+ 		            # al momento de hacer jal a la función

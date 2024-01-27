@@ -170,7 +170,7 @@ lw $v1, 0($t3)    # Se guarda valor mayor
 	
 add $t3, $a0, $t1 # Una vez encontrado el indice del elemento mayor
 				  # Se crea un temporal desde la dirección cero del array
-				  # y se le suma el indice del cero encontrado anteriormente
+	    		  # y se le suma el indice del cero encontrado anteriormente
 				  # que corresponde al elemento de mayor valor
 				  
 lw $v0, 0($t3)    # Se guarda valor menor
