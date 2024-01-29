@@ -1,1 +1,1 @@
-asdasd
+print("buscar como funciona gitignore")
