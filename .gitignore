@@ -1,8 +1,6 @@
 .idea/*
 .vscode/*
-*.swp
+.run/*
 Mars4_5.jar
-.vscode/launch.json
-launch_win.json
 *.py
-*.json
+*.swp
