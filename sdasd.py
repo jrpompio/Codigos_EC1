@@ -1,1 +1,0 @@
-print("buscar como funciona gitignore")
