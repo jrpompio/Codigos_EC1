@@ -241,8 +241,6 @@ PRINT_CADENA:
 	addi $sp, $sp, -8 # apartando espacio en memoria para guardar $a0 y $v0
 	sw  $a0, 4($sp)   # salvando valor de $a0 
 	sw  $v0, 0($sp)	  # salvando valor de $v0
-	addi $t0, $a1, 0  # salvando inicio de la lista en variable temporal
-					  # usará el argumento $a1
 					  
 	addi $v0, $0, 4 # el valor 4 en $v0 muestra en pantalla una cadena
 			        # esta cadena empieza en la dirección de memoria que contiene $a0
