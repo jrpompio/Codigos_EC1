@@ -3,11 +3,11 @@
 # Carné: B97026
 
 .data
-cadena_parentesis: .asciiz "(]{}"
+cadena_parentesis: .asciiz ")hola({)}"
 
 .text
 main:
-
+addi $s0, $0, 100
 la $a0, cadena_parentesis
 jal VALIDACION_PARENTESIS
 
@@ -16,69 +16,32 @@ jal VALIDACION_PARENTESIS
 jal EXIT
 
 VALIDACION_PARENTESIS:
-# etapa de validación de paridad
-addi $t0, $0, 40
-addi $t1, $0, 41
-addi $t2, $0, 91
-addi $t3, $0, 93
-addi $t4, $0, 123
-addi $t5, $0, 125
-addi $t7, $0, 0
-addi $t8, $0, 0
-addi $t9, $0, 0
+addi $sp, $sp, -4
+sw $s0, 0($sp)
+addi $s0, $0, 0  # Variable tamaño de cadena
 
+addi $t0, $a0, 0 # t0 dirección primer elemento, temporal
 
-INICIO:
-lb $t6, 0($a0)
-beq $t6, $0, FIN
-beq $t6, $t0, PARENTESIS_40
-beq $t6, $t1, PARENTESIS_41
-beq $t6, $t2, PARENTESIS_91
-beq $t6, $t3, PARENTESIS_93
-beq $t6, $t4, PARENTESIS_123
-beq $t6, $t5, PARENTESIS_125
+LEN:
+lb $t1, 0($t0)
+addi $s0, $s0, 1
+beq $t1, $0, NEL
+addi $t0, $t0, 1
+j LEN
+NEL:
 
-j CONTINUAR
+sub $sp, $sp, $s0   # Tamaño en en memoria igual a la cadena
+                    # se asume que todos los caracteres son paréntesis
 
-PARENTESIS_40:
-addi $t7, $t7, 1
-j CONTINUAR
-PARENTESIS_41:
-addi $t7, $t7, -1
-j CONTINUAR
-PARENTESIS_91:
-addi $t8, $t8, 1
-j CONTINUAR
-PARENTESIS_93:
-addi $t8, $t8, -1
-j CONTINUAR
-PARENTESIS_123:
-addi $t9, $t9, 1
-j CONTINUAR
-PARENTESIS_125:
-addi $t9, $t9, -1
+# acá se debe guardar los parentesis de inicio para reconocer cual debe ser 
+# el siguiente parentesis de cierre
+# no se debe tener uno de cierre sin su pareja previa de inicio
 
-CONTINUAR:
-addi $a0, $a0, 1
-j INICIO
+add $sp, $sp, $s0   # devolviendo puntero
+lw $s0, 0($sp)
+addi $sp, $sp, 4
 
-FIN:
-add $t9, $t9, $t8
-add $t9, $t9, $t7
-
-bne $t9, $0, NO_VALIDO
-
-# Etapa de validación de orden
-
-
-VALIDO:
-addi $v0, $0, 1
 jr $ra
-
-NO_VALIDO:
-addi $v0, $0, 0
-jr $ra
-
 EXIT:
 # Esta función ejecuta el syscall de $v0 = 10
 # que corresponde a la salida del programa
