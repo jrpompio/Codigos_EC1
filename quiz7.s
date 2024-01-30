@@ -4,7 +4,12 @@ arreglo: .asciiz "este arreglo tiene 4 espacios"
 main:
 
 la $a0, arreglo
+lb $t7, arreglo($0)  # ascii de e = 101
+
 jal COMPARAR_ESPACIOS
+
+
+
 
 li $v0, 10
 syscall
@@ -19,7 +24,7 @@ beq $t1, $0, end # Me faltó esta linea
 
 addi $t2, $0, 0x20
 addi $t0, $t0, 1
- 
+
 bne $t1, $t2, loop1
 
 addi $t3, $t3, 1
