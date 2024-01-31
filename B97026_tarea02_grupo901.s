@@ -167,10 +167,10 @@ addi $v0, $0, 0
 
 TERMINAR_VALIDO:
 
+addi $sp, $sp, 1    # devolviendo puntero con respecto al 1 byte tomado 
 add $sp, $sp, $s0   # devolviendo puntero con respecto al tamaño de la cadena
 lw $s0, 0($sp)      # devolviendo valor s0
-addi $sp, $sp, 5    # devolviendo puntero con respecto al tamaño del registro
-                    # s0, y 1 byte usado en el loop de verificación
+addi $sp, $sp, 4    # devolviendo puntero con respecto al tamaño de $s0
 
 jr $ra
 
