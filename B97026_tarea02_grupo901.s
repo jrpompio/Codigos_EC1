@@ -209,3 +209,12 @@ EXIT:
 	syscall	
 	
 jr $ra
+
+# Conclusiones:
+# - La función es optima, se ejecuta n veces el loop para obtener
+#   el tamaño de la cadena. 
+#       se puede ejecutar otras n veces para analizar la cadena
+#   en el loop de verificación ( en caso de ser valido),
+#   más pasos intermedios (c). (2n + c)
+# - El código, prácticamente, se basa en saltos y etiquetas, por lo que se
+#   entrena la ubicación espacial dentro del código. 
