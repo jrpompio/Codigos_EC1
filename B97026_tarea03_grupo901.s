@@ -1,10 +1,14 @@
 # Tarea03
 # Estudiante: Junior Ruiz Sánchez
 # Carné: B97026
+.text
 main:
-
-addi $a0, $0, 630
-addi $a1, $0, 210
+jal MAYORZ
+bne $v1, $0, main
+add $a0, $v0, $0
+jal MAYORZ
+bne $v1, $0, main
+add $a1, $v0, $0
 
 jal MCD
 
@@ -32,4 +36,10 @@ RESULTADO:
 add $v0, $a0, 0
 lw $ra, 0($sp)
 addi $sp, $sp, 4
+jr $ra
+
+MAYORZ:
+li $v0, 5
+syscall
+slt $v1, $v0, $0
 jr $ra
