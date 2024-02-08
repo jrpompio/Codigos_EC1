@@ -14,7 +14,7 @@
 # el resultado.
 
 .data 
-bienvenida:     .ascii "\n"
+bienvenida:     .ascii "\n\n"
                 .asciiz "Iniciando programa..."
                 
 VALOR_A:        .ascii "\n"
