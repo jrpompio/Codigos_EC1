@@ -37,6 +37,9 @@ jal PRINT_CADENA            # <-- Mostrando mensaje en pantalla
 
 la $a0, VALOR_A             # <-- Pasando primer valor a a1
 jal PRINT_CADENA            # <-- Mostrando mensaje de indicación
+la $a3, ERROR               # <-- Cargando mensaje de error para MAYORZ
+                            #     solo se necesita hacer una vez
+                            #     puesto que no se requiere modificar
 jal MAYORZ                  # <-- Llamando a funcion para validar valor > cero
                             # v1 es la salida de MAYORZ, es 1 cuando v0 < 0
 bne $v1, $0, main           # <-- si v1 != 0, repite el programa  
@@ -97,10 +100,15 @@ addi $sp, $sp, 4                # <-- devolviendo puntero a su valor original
 jr $ra
 
 MAYORZ:
-# Esta función sirve para validad si un numero es mayor o igual a cero
-# --- $a3: valor de entrada
+# Esta función sirve para validar si un numero es mayor o igual a cero
+# este numero debe ser la salida de otra función, la cual su salida esté en
+# el registro $v0.
+# El valor de salida $v1 servirá para usarse con un branch
+# a donde se deba saltar.
+# --- $a3: entrada de dirección correspondiente al mensaje de error
+# --- $v0: valor a validar si es mayor a cero
 # --- $v1: valor de salida $v1=1 si el numero es menor a cero
-#                          #v1=0 si el numero es mayor o igual a cero
+#                          $v1=0 si el numero es mayor o igual a cero
 
 addi $sp, $sp, -4           # <-- apartando espacio para guardar el valor $v0
                             # ya que se usará para mostrar un mensaje
@@ -114,7 +122,7 @@ beq $v1, $0, SALTAR_MENSAJE # <-- si el valor no es erroneo, se salta
                             # la sección que muestra el mensaje
 
 li $v0, 4                   
-la $a0, ERROR
+move $a0, $a3
 syscall                     # <-- mostrando mensaje de error
 
 lw $v0, 0($sp)              # <-- cargando valor de v0
@@ -131,7 +139,6 @@ PRINT_CADENA:
 # $a0: argumento de dirección del elemento inicial de la cadena
     addi $sp, $sp, -4
     sw $v0, 0($sp)
-
 	addi $v0, $0, 4 # el valor 4 en $v0 muestra en pantalla una cadena
 			        # esta cadena empieza en la dirección de memoria
                     # que contiene $a0
@@ -149,11 +156,6 @@ PRINT_INTEGER:
 	addi $v0, $0, 1 # el valor 1 en $v0 muestra un valor entero
                     # contenido en $a0
 	syscall
-
-    addi $v0, $0, 11    # el valor 11 en $v0 muestra un caracter ascii
-                        # contenido en $a0
-    addi $a0, $0, 10    # codigo ascci para salto de linea "\n"
-    syscall
 
     lw $v0, 0($sp)
     addi $sp, $sp, 4
