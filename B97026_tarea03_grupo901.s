@@ -58,7 +58,8 @@ jal MCD                     # <-- llamando a función que calcula el mcd
 la $a0, RESULTADO_MCD       # <-- Cargando mensaje de indicación MCD
 jal PRINT_CADENA            # <-- Mostrando mensaje de indicación
 
-add $a0, $v0, $0            # <-- moviendo valor de v0 a a0 para mostrar el valor
+add $a0, $v0, $0            # <-- moviendo valor de v0 a a0
+                            # para mostrar el valor
 jal PRINT_INTEGER           # <-- mostrando el valor en a0
 
 j main                      # <-- repitiendo el programa
