@@ -5,7 +5,7 @@ addi $s1, $s0, 32
 addi $t0, $0, 15
 sw $t0, 0($s0)
 
-addi $t0, $0, 12
+addi $t0, $0, 15
 sw $t0, 4($s0)
 
 addi $t0, $0, 35
@@ -20,7 +20,7 @@ sw $t0, 16($s0)
 addi $t0, $0, 10
 sw $t0, 20($s0)
 
-addi $t0, $0, 1
+addi $t0, $0, 15
 sw $t0, 24($s0)
 
 addi $t0, $0, 0
