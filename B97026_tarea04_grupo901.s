@@ -11,7 +11,7 @@ msj_prueba: .asciiz "El programa está corriendo \n"
 
 main:
 
-li $a1, 5
+li $a1, 3
 
 
 jal FAREY_SUC
@@ -25,6 +25,11 @@ syscall
 #
 
 FAREY_SUC:
+addi $sp, $sp, -8        # <-- Apartando espacio en pila para guardar
+                         #     dos ceros al final de la lista.
+                         # Esto servirá para detener algún escaneo
+sw $0, 0($sp)            # <-- guardando penultimo cero
+sw $0, 4($sp)            # <-- guardando ultimo cero
 
 mul $t9, $a1, $a1        # <-- Creando valor para reservar espacio en pila
 sll $t9, $t9, 2          #     que es el cuadrado de n multiplicado por 4
@@ -37,6 +42,13 @@ addi $t6, $a1, 1         # <-- aumentando valor de parametro
                          #     para ser usado en ciclo for 
                          #     y pasando a variable temporal
                          #     ya que se usará otra función que usa a1
+
+addi $t2, $0, 1          # Anticipando valores 1/1 para control
+sw $t2, 0($sp)           # de numeros repetidos
+sw $t2, 4($sp)           # ya que se debe tener un inicio para comparar
+sw $0,  8($sp)           
+sw $0,  12($sp)
+
 FOR_NUMERADORES:
 
 addi $t7, $0, 1          # <-- Creando variable de aumento para denominadores
@@ -46,34 +58,60 @@ addi $t7, $0, 1          # <-- Creando variable de aumento para denominadores
     slt $t1, $t7, $t8                  # <-- si dem < num  t1 = 1
     bne $t1, $0, SIGUIENTE_ELEMENTO    # <-- siguiente elemento si t1 no es 0
     
-                                       # Simplificando
+                                    # Simplificando
 
-    add $a2, $0, $t8                   # Preparando valores para función MCD
+    add $a2, $0, $t8                # <-- Preparando valores para función MCD
     add $a1, $0, $t7 
-    
-    add $t2, $0, $ra
-    jal MCD
-    add $ra, $0, $t2  
+
+    add $t2, $0, $ra                    # <-- Guardando $ra en temporal 
+    jal MCD                             # <-- Llamado a función
+    add $ra, $0, $t2                    # <-- restaurando $ra
     
     div $t8, $v0
     mflo $t5
     div $t7, $v0
     mflo $t4
+    
+    add $t2, $0, $sp
 
-    # salvando datos
+    while:
+    lw $a2, 0($t2)
+    lw $a1, 4($t2)
+    mul $t1, $a1, $a2
+    beq $t1, $0, SALVANDO_DATOS
 
+    bne $a2, $t5, NUM_DIFERENTE
+        beq $a1, $t4, SIGUIENTE_ELEMENTO    # Num igual y Dem igual
+    NUM_DIFERENTE:
+    addi $t2, $t2, 8                         # <-- siguientes dos elementos
+    j while
+
+
+    
+    SALVANDO_DATOS:
     sw $t5, 0($t0)          # <-- Guardando numerador
     sw $t4, 4($t0)          # <-- Guardando denominador
+    sw $0, 8($t0) 
+    sw $0, 12($t0)
                             li $v0, 1 # para depurar
                             addu $a0, $t5, $0
                             syscall
+                            
+                            li $v0, 11
+                            li $a0, 47
+                            syscall
+    
+
+                            li $v0, 1 # para depurar
                             addu $a0, $t4, $0
                             syscall
+                            
                             li $v0, 11
                             li $a0, 10
                             syscall
     
     SIGUIENTE_ELEMENTO:
+
     addi $t7, $t7, 1        # aumentando el valor del denominador  
     addi $t0, $t0, 8        # <-- siguientes dos elementos 
     bne $t7, $t6, FOR_DENOMINADORES
