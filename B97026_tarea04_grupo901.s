@@ -17,11 +17,6 @@ li $a1, 3
 jal FAREY_SUC
 
 
-add $a0, $0, $t9
-
-li $v0, 1
-syscall
-
 li $v0, 10
 syscall
 
