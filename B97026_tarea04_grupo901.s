@@ -133,6 +133,7 @@ addi $t7, $0, 1          # <-- Creando variable de aumento para denominadores
     
     DEN_MAS_1:
     addi $t7, $t7, 1        # aumentando el valor del denominador  
+    
     bne $t7, $t6, FOR_DENOMINADORES
 
 addi $t8, $t8, 1
