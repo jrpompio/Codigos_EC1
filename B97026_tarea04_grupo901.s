@@ -1,30 +1,58 @@
-# Tarea03
+# Tarea04
 # Estudiante: Junior Ruiz Sánchez
 # Carné: B97026
+# 
+# Este código solicita por medio de terminar un valor entero mayor a cero
+# posterior mente entrega la sucesión de Farey en pantalla
 #
+# Para ello guarda fracciones unicamente mayores a 1, en su forma simplificada
+# y ordenadas de valores menores a valores mayores
+# se usa una función especifica para mostrar el contenido en pantalla
+# pero necesita dos funciones, MCD para simplificar los valores mediante su 
+# máximo común divisor, y BUBBLE_SORT_FRAQ que es bubble sort adaptada a
+# fracciones.
 .data 
 
-msj_prueba: .asciiz "El programa está corriendo \n"
+msj_entrada: .ascii "\n\n"
+             .ascii "Introduzca un valor entero mayor a cero "
+             .asciiz "para entregar las sucesion de Farey: \n-->"
+
+msj_salida:  .ascii "\n"
+             .asciiz "La sucesion de Farey correspondiente es: \n\n"
 
 
 .text
 
 main:
 
-li $a1, 5
+la $a0, msj_entrada             # Cargando mensaje para entrada de valor n
+jal PRINT_CADENA                # Mostrando mensaje
 
-
-jal FAREY_SUC
-
-li $v0, 10
+addi $v0, $0, 5                 # Valor $v0 para input
 syscall
+add $a1, $0, $v0                # moviendo el valor ingresado hacia $a1
 
+la $a0, msj_salida              # Cargando mensaje de salida relacionado 
+                                # a la sucesion
+jal PRINT_CADENA                # Mostrando mensaje
 
-#
-# FUNCIONES
-#
+jal FAREY_SUC                   # Llamando a la función para mostrar
+                                # la sucesion correspondiente a n
+
+j main
+
 
 FAREY_SUC:
+# Esta función recibe un valor entero mayor a cero y devuelve la sucesion
+# de Farey en pantalla  
+#
+# dicha función es dependiente de las funciones MCD y BUBBLE_SORT_FRAQ
+# --- $a1: corresponde al valor natural a ingresar
+#          para mostrar en pantalla la sucesion de Farey
+
+addi $sp, $sp, -4        # <-- Apartando espacio en pila para guardar $s0
+sw $s0, 0($sp)           # <-- Guardando $s0
+
 addi $sp, $sp, -8        # <-- Apartando espacio en pila para guardar
                          #     dos ceros al final de la lista.
                          # Esto servirá para detener algún escaneo
@@ -78,6 +106,8 @@ addi $t7, $0, 1          # <-- Creando variable de aumento para denominadores
     lw $a1, 4($t2)                 # obteniendo valor del denominador
     beq $a1, $0, SALVANDO_DATOS    # si el denominador es igual a cero
                                    # se procede a guardar la fracción
+                                   # ya que el lugar de eleminar el valor
+                                   # se decide en su lugar, no guardarlo
 
     bne $a2, $t5, NUM_DIFERENTE    # Se verifica si el numerador es diferente
                                    # al numerador del arreglo almacenado
@@ -108,45 +138,74 @@ addi $t7, $0, 1          # <-- Creando variable de aumento para denominadores
 addi $t8, $t8, 1
 bne $t8, $t6, FOR_NUMERADORES
 
- add $s2, $0, $ra               # <-- Guardando $ra en temporal 
-
+add $s0, $0, $ra               # <-- Guardando $ra en temporal 
 add $a1, $0, $sp               # <-- Guardando $ra en temporal 
 jal BUBBLE_SORT_FRAQ                        # <-- Llamado a función
- add $ra, $0, $s2               # <-- restaurando $ra
+add $ra, $0, $s0               # <-- restaurando $ra
 
-add $t2, $0, $sp
+add $t2, $0, $sp               # <-- puntero a temporal 2 para imprimir 
+                               #     el array de la sucesion
+
+li $v0, 11                      #
+li $a0, 40                      #
+syscall                         #  Toda esta seccion
+li $a0, 48                      #  es usada para mostrar
+syscall                         #  el inicio de la sucesion
+li $a0, '/'                     #  que corresponde a:
+syscall                         #
+li $a0, 49                      #  
+syscall                         #   ( 1/1, 
+li $a0, 44                      # 
+syscall                         #
+li $a0, 32                      #
+syscall                         #
 
 LOOP_PRINT:
-lw $t3, 0($t2)
-lw $t1, 4($t2)
+lw $t3, 0($t2)                  # Se carga el numerador
+lw $t1, 4($t2)                  # Se carga el denominador
 
-beq $t3, $0, END_LOOP_PRINT
+beq $t1, $0, END_LOOP_PRINT     # Si el denominador es igual a cero
+                                # se termina el print
+li $v0, 1                       # valor $v0 para imprimir un entero
+add $a0, $t3, $0                # se pasa el valor del numerador a $a0
+syscall                         
 
-li $v0, 1 
-add $a0, $t3, $0
+li $v0, 11                      # valor $v0 para imprimir un caracter ascii
+li $a0, 47                      # caracter "/"
+syscall                             
+
+
+li $v0, 1                       
+add $a0, $t1, $0                # se pasa el valor del numerador a $a0
 syscall
 
-li $v0, 11
-li $a0, 47
+li $v0, 11                  
+li $a0, 44                      # caracter ","
+syscall
+li $a0, 32                      # espacio
 syscall
 
-
-li $v0, 1 # para depurar
-addu $a0, $t1, $0
-syscall
-
-li $v0, 11
-li $a0, 44
-syscall
-li $a0, 32
-syscall
-
-addi $t2, $t2, 8
+addi $t2, $t2, 8                # Siguientes dos elementos (fraccion)
 j LOOP_PRINT
 END_LOOP_PRINT:
 
+li $v0, 11                      #
+li $a0, 49                      #
+syscall                         #
+li $a0, '/'                     #   Toda esta seccion es para mostrar
+syscall                         #   el cierre de la sucesion
+li $a0, 48                      #   es decir:
+syscall                         #       
+li $a0, 41                      #   1/0)
+syscall                         #
+
+
+
 add $sp, $sp, $t9        # <-- Devolviendo espacio en pila para numeradores
 add $sp, $sp, $t9        # <-- Devolviendo espacio en pila para denominadores
+addi $sp, $sp, 8         # <-- Devolviendo espacio en pila de ultimos ceros
+lw $s0, 0($sp)           # <-- Guardando $s0
+addi $sp, $sp, 4        # <-- Apartando espacio en pila para guardar $s0
 
 jr $ra
 
@@ -190,19 +249,19 @@ BUBBLE_SORT_FRAQ:
 addi $sp, $sp, -4               # <-- Apartando espacio para $ra
 sw $ra, 0($sp)                  # <-- guardando el valor de $ra
 
-SWAPING:              # mientras los swap sean 0
-li $t9, 0           # variable de verificación de swap
+SWAPING:                        # mientras los swap sean 0
+li $t9, 0                       # variable de verificación de swap
 add $t8, $0, $a1
 
-iteration: 
-lw $t1, 0($t8) # se carga numerador i 
-lw $t2, 4($t8) # se carga el denominador i
+ITERATION: 
+lw $t1, 0($t8)          # se carga numerador i 
+lw $t2, 4($t8)          # se carga el denominador i
 
-lw $t3, 8($t8) # se carga el numerador j
-lw $t4, 12($t8) # se carga el denominador j
+lw $t3, 8($t8)          # se carga el numerador j
+lw $t4, 12($t8)         # se carga el denominador j
 
 
-beq $t4, $0, salir # si el denominador j es cero, se terminan las iteraciones
+beq $t4, $0, SALIR # si el denominador j es cero, se terminan las iteraciones
 
 # obteniendo valores de referencia
 mul $t5, $t1, $t4               # Valor de referencia de fracción [m]
@@ -210,7 +269,7 @@ mul $t6, $t3, $t2               # Valor de referencia de fracción [m + 1]
 
 slt $t7, $t6,  $t5  
 
-beq $t7, $0, noesmenor     # si no es menor se salta el cambio
+beq $t7, $0, NO_MINUS      # si no es menor se salta el cambio
 sw $t1, 8($t8)             # se guarda numerador j en el lugar del numerador i 
 sw $t2, 12($t8)        # se guarda denominador j en el lugar del denominador i
 
@@ -218,23 +277,40 @@ sw $t3, 0($t8)         # se guarda numerador i en el lugar del numerador j
 sw $t4, 4($t8)         # se guarda denominador j en el lugar del denominador i
 addi $t9, $t9, 1       # se hizo cambio, $t9 no es 0
 
-noesmenor: 
+NO_MINUS: 
 
-addi $t8, $t8, 8 # variable de iteración
+addi $t8, $t8, 8                # Siguiente elemento
+j ITERATION
 
-j iteration
-
-salir:
-beq $t9, $0, notwhile
+SALIR:
+beq $t9, $0, NOT_SWAP           # Si no se realiza ningun swap se termina
 j SWAPING
 
-notwhile: 
-
+NOT_SWAP: 
 lw $ra, 0($sp)                  # <-- carga de registro $ra guardado
 addi $sp, $sp, 4                # <-- devolviendo puntero a su valor original
 
 jr $ra
 
+PRINT_CADENA:
+# esta función obtiene del argumento el inicio de una cadena de carácteres
+# tipo asciiz, muestra desde el primer elemento de la cadena
+# hasta encontrar un valor 0 y detenerse
+# $a0: argumento de dirección del elemento inicial de la cadena
+    addi $sp, $sp, -4
+    sw $v0, 0($sp)
+	addi $v0, $0, 4 # el valor 4 en $v0 muestra en pantalla una cadena
+			        # esta cadena empieza en la dirección de memoria
+                    # que contiene $a0
+	syscall
+    lw $v0, 0($sp)
+    addi $sp, $sp, 4
+jr $ra
 
 # Conclusiones:
-
+#   - El código contiene funciones usadas en trabajos anteriores
+#     por lo qué fue buena práctica realizar esas funciones de manera que
+#     se pudiesen reusar en otros codigos sin generar problemas
+#   - El código no es muy optimo, contiene varias secciones que iteran 
+#     de forma cuadrática, el espacio en pila se reserva el doble del cuadrado
+#     del valor ingresado, 
