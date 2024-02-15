@@ -1,32 +1,18 @@
-addi $s0, $0, 0x10010000
-addi $s1, $s0, 32
+.data
+Array:
+.word 1, 5, 1, 7, 1,10 , 1, 1, 1, 13 , 0, 0
 
-# agregando lista
-addi $t0, $0, 15
-sw $t0, 0($s0)
-
-addi $t0, $0, 15
-sw $t0, 4($s0)
-
-addi $t0, $0, 35
-sw $t0, 8($s0)
-
-addi $t0, $0, 8
-sw $t0, 12($s0)
-
-addi $t0, $0, 7
-sw $t0, 16($s0)
-
-addi $t0, $0, 10
-sw $t0, 20($s0)
-
-addi $t0, $0, 15
-sw $t0, 24($s0)
-
-addi $t0, $0, 0
-sw $t0, 28($s0)
+.text
+main:
+la $a1, Array
+jal BUBBLE_SORT_ASC
 
 
+
+li $v0, 10
+syscall
+
+BUBBLE_SORT_ASC:
 
 while: # mientras los swap sean 0
 li $t7, 0 # variable de control while 
@@ -34,7 +20,7 @@ li $t6, 0 # variable de iteración
 
 iteration: 
 sll $t5, $t6, 2 # iteración * 4
-add $t4, $t5, $s0 # dirección de puntero + iteración * 4
+add $t4, $t5, $a1 # dirección de puntero + iteración * 4
 lw $s1, 0($t4) # se carga el elemento i 
 lw $s2, 4($t4) # se carga el elemento i + 1
 
@@ -61,7 +47,7 @@ beq $t7, $0, notwhile
 j while
 
 notwhile: 
-
+jr $ra
 
 
 

@@ -33,6 +33,7 @@ cadena_2: .asciiz "muchos parentesis () [] {} {{{()}[]}()}"
 cadena_3: .asciiz "este cierra 2 veces sin abrir])”"
 cadena_4: .asciiz "[{y este último cierra en un orden incorrecto]}"
 
+
 .text
 main:
                         # Solo se comentará para la primera cadena
