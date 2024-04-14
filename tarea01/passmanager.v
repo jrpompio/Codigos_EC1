@@ -53,7 +53,7 @@ case (state)
 
     thirdTry: begin
         if (pass == mypass) nextState = rightPin;
-        else nextState = wrongPin;
+        else if (pass != mypass) nextState = wrongPin;
     end
     wrongPin: if (pass == mypass) nextState = standby;
     

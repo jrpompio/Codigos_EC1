@@ -20,10 +20,12 @@ module test (
         $dumpvars;
  
         #5 sensorA = 1'b1;  
-             pass = 8'b00100110;
+            pass = 8'b00100110;
         
         #5 sensorB = 1'b1;
             sensorA = 1'b0;
+            pass = 0;
+        
         #5 $finish;
     end 
 endmodule
