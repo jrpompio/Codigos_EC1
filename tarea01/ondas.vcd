@@ -1,0 +1,135 @@
+$date
+	Sat Apr 13 19:09:55 2024
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module testbench $end
+$var wire 8 ! pass [7:0] $end
+$var wire 1 " wrongPinAlarm $end
+$var wire 1 # sensorB $end
+$var wire 1 $ sensorA $end
+$var wire 1 % gateState $end
+$var wire 1 & clk $end
+$var wire 1 ' blockAlarm $end
+$scope module Uutmain $end
+$var wire 1 ( authenticated $end
+$var wire 1 ' blockAlarm $end
+$var wire 1 % gateState $end
+$var wire 8 ) pass [7:0] $end
+$var wire 8 * passConection [7:0] $end
+$var wire 1 " wrongPinAlarm $end
+$var wire 1 + wrongPinAlarmConection $end
+$var wire 1 # sensorB $end
+$var wire 1 $ sensorA $end
+$var wire 1 , gateStateConection $end
+$var wire 1 & clk $end
+$var wire 1 - blockAlarmConection $end
+$var wire 1 . authenticatedConection $end
+$scope module Uut1 $end
+$var wire 8 / pass [7:0] $end
+$var wire 1 $ sensorA $end
+$var wire 1 , gateState $end
+$var wire 1 & clk $end
+$var reg 1 . authenticated $end
+$var reg 6 0 nextState [5:0] $end
+$var reg 6 1 state [5:0] $end
+$var reg 1 + wrongPinAlarm $end
+$upscope $end
+$scope module Uut2 $end
+$var wire 1 . authenticated $end
+$var wire 1 # sensorB $end
+$var wire 1 $ sensorA $end
+$var wire 1 & clk $end
+$var reg 1 - blockAlarm $end
+$var reg 1 , gateState $end
+$var reg 3 2 nextState [2:0] $end
+$var reg 3 3 state [2:0] $end
+$upscope $end
+$upscope $end
+$scope module source $end
+$var wire 1 ' blockAlarm $end
+$var wire 1 % gateState $end
+$var wire 1 " wrongPinAlarm $end
+$var reg 1 & clk $end
+$var reg 8 4 pass [7:0] $end
+$var reg 1 $ sensorA $end
+$var reg 1 # sensorB $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+bx 4
+bx 3
+b1 2
+bx 1
+b1 0
+bz /
+0.
+0-
+1,
+0+
+bz *
+bx )
+0(
+0'
+0&
+1%
+x$
+x#
+0"
+bx !
+$end
+#1
+0%
+0,
+b1 1
+b1 3
+1&
+#2
+0&
+#3
+1&
+#4
+0&
+#5
+b10 1
+b100 0
+1&
+b100110 !
+b100110 )
+b100110 4
+1$
+#6
+0&
+#7
+b1000 0
+b100 1
+1&
+#8
+0&
+#9
+b10000 0
+b1000 1
+1&
+#10
+0&
+0$
+1#
+#11
+1"
+1+
+b10000 1
+1&
+#12
+0&
+#13
+1&
+#14
+0&
+#15
+1&
