@@ -23,14 +23,33 @@ begin
         #0.001                     // Los valores anteriores se mantienen
                                    // Por 1 ms
 
+            
+            sensorA = 1'b1;        // llega el vehiculo, sensor A en alto 
+        #2                         // Se debe agregar esto para pasar
+                                   // Al siguiente estado
+
 
             sensorA = 1'b1;        // llega el vehiculo, sensor A en alto 
             sensorB = 1'b0;        // No hay vehiculo dentro, sensor B en bajo
+            pass = 8'b11111111;    // Clave incorrecta
+        #2                         // Estos valores se mantienen por  200 ms
+                                   // quivalen a 2 ciclos de reloj
+
+            sensorA = 1'b1;        // Sensor A sigue en alto 
+            sensorB = 1'b0;        // Sensor B sigue en bajo
+            pass = 8'b00111110;    // Clave incorrecta
+        #2                         // Estos valores se mantienen por  200 ms
+                                   // quivalen a 2 ciclos de reloj
+
+            sensorA = 1'b1;        // Sensor A sigue en alto 
+            sensorB = 1'b0;        // Sensor B sigue en bajo
             pass = 8'b00100110;    // Clave correcta
         #50                        // Estos valores se mantienen por 5000 ms
                                    // Es decir por 5 segundos que también 
                                    // quivalen a 25 ciclos de reloj
-    
+
+
+
             sensorA = 1'b0;        // el auto se va, sensor A en bajo
             sensorB = 1'b0;        // no hay auto dentro, sensor B en alto
             pass = 0;              // La contraseña pasa a cero
@@ -43,7 +62,8 @@ begin
         #100                       // Esto se mantiene por 10 segundos de reloj
         
             $finish;
-end
+    end 
+
 
 endmodule
 

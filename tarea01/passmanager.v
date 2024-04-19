@@ -7,13 +7,16 @@ module passmanager (
     output reg authenticated
 );
 
-parameter standby = 6'b000001;
+parameter standby =    6'b000001;
 parameter carArrived = 6'b000010;
-parameter secondTry = 6'b000100;
-parameter thirdTry = 6'b001000;
-parameter wrongPin = 6'b010000;
-parameter rightPin = 6'b100000;
-parameter mypass = 8'b00100110;   // B97026: 26 = 0010 0110
+parameter secondTry =  6'b000100;
+parameter thirdTry =   6'b001000;
+parameter wrongPin =   6'b010000;
+parameter rightPin =   6'b100000;
+
+parameter mypass = 8'b00100110;   // B97026: 26 ---> 0010 0110
+                                // 0x26 = 8'b00100110
+
 
 reg [5:0] state;
 reg [5:0] nextState;
@@ -26,7 +29,7 @@ end
 always @(*) begin
     
     if (state == rightPin) begin
-        
+      authenticated = 1'b1;
     end else begin 
       authenticated = 1'b0;
     end
@@ -42,25 +45,26 @@ case (state)
     standby: if (sensorA && ~gateState) nextState = carArrived;
 
     carArrived: begin
-        if (pass == mypass) nextState = rightPin;
-        else nextState = secondTry;
+        if (mypass == pass) nextState = rightPin;
+        else if (pass != mypass) nextState = secondTry;
     end
     
     secondTry: begin
-        if (pass == mypass) nextState = rightPin;
-        else nextState = thirdTry;
+        if (mypass == pass) nextState = rightPin;
+        else if (pass != mypass) nextState = thirdTry;
     end
 
     thirdTry: begin
-        if (pass == mypass) nextState = rightPin;
+        if (mypass == pass) nextState = rightPin;
         else if (pass != mypass) nextState = wrongPin;
     end
-    wrongPin: if (pass == mypass) nextState = standby;
+    wrongPin: if (mypass == pass) nextState = standby;
     
-    rightPin: if (~gateState) nextState = standby; 
+    rightPin: if (~sensorA && ~gateState) nextState = standby; 
 
     default: nextState = standby;
 endcase
 
 end
+
 endmodule

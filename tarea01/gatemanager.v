@@ -21,11 +21,11 @@ end
 always @(*) begin
 
 
-    if (state == gateClose || state == gateBlock)
+    if (state == gateOpen)
     begin
-      gateState = 1'b0;
-    end else begin 
       gateState = 1'b1;
+    end else begin 
+      gateState = 1'b0;
     end
 
     if ( state == gateBlock)
@@ -41,7 +41,8 @@ case (state)
 
     gateBlock: if (authenticated) nextState = gateClose;
     
-    gateClose: begin
+    gateClose: 
+    begin
       if (sensorA && ~sensorB && authenticated) nextState = gateOpen;
       else if (sensorA && sensorB) nextState = gateBlock;
     end

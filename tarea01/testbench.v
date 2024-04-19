@@ -1,5 +1,4 @@
 `include "parkingmanager.v"
-`include "tester.v"
 
 module testbench;
 

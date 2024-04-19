@@ -35,7 +35,7 @@ gatemanager Uut2 (
     .blockAlarm(blockAlarmConection)
 );
 
-assign pass = passConection;
+assign passConection = pass;
 assign authenticated = authenticatedConection;
 assign gateState = gateStateConection;
 assign blockAlarm = blockAlarmConection;
