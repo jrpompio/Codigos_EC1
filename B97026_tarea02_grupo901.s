@@ -17,8 +17,8 @@
 
 
 .data
-msj_init:       .ascii "\n"
-                .asciiz "Mostrando Cadena:\n"
+msj_init:       
+                .asciiz "\nMostrando Cadena:\n"
 
 msj_valido:     .ascii  "\n\n"
                 .ascii "----Resultado:\n"
@@ -27,7 +27,7 @@ msj_valido:     .ascii  "\n\n"
 msj_invalido:   .ascii  "\n\n"
                 .ascii "----Resultado:\n"
                 .asciiz "parentesis invalidos\n"
-                
+
 cadena_1: .asciiz "Aca no hay parentesis"
 cadena_2: .asciiz "muchos parentesis () [] {} {{{()}[]}()}"
 cadena_3: .asciiz "este cierra 2 veces sin abrir])”"
@@ -38,9 +38,21 @@ cadena_4: .asciiz "[{y este último cierra en un orden incorrecto]}"
 main:
                         # Solo se comentará para la primera cadena
                         # es lo mismo para las demás
-la $a0, msj_init            # <-- Se carga el primer elemento de msj_init
+#la $a0, msj_init            # <-- Se carga el primer elemento de msj_init
+
+
+lui $a0, 0x1001
+ori $a0, $a0, 0x0000  # SIN USAR PSEUDO INSTRUCCIONES
+
+
+
 jal PRINT_CADENA            # Se muestra dicha cadena cargada
-la $a0, cadena_1            # <-- Se carga el primer elemento de cadena_1
+
+#la $a0, cadena_1            # <-- Se carga el primer elemento de cadena_1
+
+lui $a0, 0x1001
+ori $a0, $a0, 0x0060    # SIN USAR PSEUDO INSTRUCCIONES
+
 jal PRINT_CADENA            # <-- Se muestra dicha cadena cargada
 jal VALIDACION_PARENTESIS   # <-- Se Usa la función
 jal VALIDACION_VO           # <-- Se muestra el mensaje de validación
